@@ -1,88 +1,102 @@
+import { useState } from "react";
 import { useNavigate } from "react-router";
-import { useAuth } from "../context/authContext"
+import { useAuth } from "../context/authContext";
 import { Link } from "react-router-dom";
 
 export function Servicios() {
+  const [showDetails, setShowDetails] = useState(false); // variable de estado para controlar si se muestra la información detallada o no
+  const [selectedService, setSelectedService] = useState(null); // variable de estado para almacenar el servicio seleccionado
 
-    return (
-        <div className="flex-1 flex items-center justify-center">
-            <table className="w-full border-collapse border border-gray-400">
-                <thead>
-                    <tr className="bg-green-500 text-white">
-                        <th className="px-4 py-2">Prestador</th>
-                        <th className="px-4 py-2">Servicio</th>
-                        <th className="px-4 py-2">Descripción general</th>
-                        <th className="px-4 py-2">Costo (en pesos colombianos)</th>
-                    </tr>
-                </thead>
-                <tbody>
+  const services = [
+    {
+      id: 1,
+      provider: "Juan Alberto Rodriguez",
+      name: "Plomería",
+      description: "Reparación de fugas de agua y gas",
+      price: 180000,
+    },
+    {
+      id: 2,
+      provider: "Luisa Ramirez",
+      name: "Limpieza",
+      description: "Servicio de limpieza profunda para hogares y oficinas",
+      price: 250000,
+    },
+    {
+        id: 3,
+        provider: "Carlos Hernandez",
+        name: "Carpintería",
+        description:
+          "Construcción de estructuras de madera para exteriores",
+        price: 280000,
+      },
+      {
+        id: 4,
+        provider: "Ana Maria Fernandez",
+        name: "Pintura",
+        description:
+          "Aplicación de pintura decorativa para paredes interiores",
+        price: 150000,
+      },
+  ];
 
-                    <tr>
-                        <td className="border px-4 py-2">Juan Alberto Rodriguez</td>
-                        <td className="border px-4 py-2">Plomería</td>
-                        <td className="border px-4 py-2">Reparación de fugas de agua y gas</td>
-                        <td className="border px-4 py-2">180000</td>
-                    </tr>
-                    <tr>
-                        <td className="border px-4 py-2">Luisa Ramirez</td>
-                        <td className="border px-4 py-2">Limpieza</td>
-                        <td className="border px-4 py-2">Servicio de limpieza profunda para hogares y oficinas</td>
-                        <td className="border px-4 py-2">250000</td>
-                    </tr>
-                    <tr>
-                        <td className="border px-4 py-2">Carlos Hernandez</td>
-                        <td className="border px-4 py-2">Carpintería</td>
-                        <td className="border px-4 py-2">Construcción de estructuras de madera para exteriores</td>
-                        <td className="border px-4 py-2">280000</td>
-                    </tr>
-                    <tr>
-                        <td className="border px-4 py-2">Ana Maria Fernandez</td>
-                        <td className="border px-4 py-2">Pintura</td>
-                        <td className="border px-4 py-2">Aplicación de pintura decorativa para paredes interiores</td>
-                        <td className="border px-4 py-2">150000</td>
-                    </tr>
-                    <tr>
-                        <td className="border px-4 py-2">Miguel Rodriguez</td>
-                        <td className="border px-4 py-2">Electricidad</td>
-                        <td className="border px-4 py-2">Reparación y mantenimiento de sistemas eléctricos de automóviles</td>
-                        <td className="border px-4 py-2">200000</td>
-                    </tr>
-                    <tr>
-                        <td className="border px-4 py-2">Fernando Alonso</td>
-                        <td className="border px-4 py-2">Refacción de muebles</td>
-                        <td className="border px-4 py-2">Reparación y restauración de muebles</td>
-                        <td className="border px-4 py-2">200000</td>
-                    </tr>
-                    <tr>
-                        <td className="border px-4 py-2">Julia Fernández</td>
-                        <td className="border px-4 py-2">Electricidad</td>
-                        <td className="border px-4 py-2">Instalación de enchufes y switches</td>
-                        <td className="border px-4 py-2">250000</td>
-                    </tr>
-                    <tr>
-                        <td className="border px-4 py-2">Santiago Gomez</td>
-                        <td className="border px-4 py-2">Carpintería</td>
-                        <td className="border px-4 py-2">Fabricación de muebles a medida</td>
-                        <td className="border px-4 py-2">280000</td>
-                    </tr>
-                    <tr>
-                        <td className="border px-4 py-2">Maria Hernandez</td>
-                        <td className="border px-4 py-2">Jardinería</td>
-                        <td className="border px-4 py-2">Corte y mantenimiento de césped</td>
-                        <td className="border px-4 py-2">150000</td>
-                    </tr>
-                    <tr>
-                        <td className="border px-4 py-2">Pedro Flores</td>
-                        <td className="border px-4 py-2">Pintura</td>
-                        <td className="border px-4 py-2">Pintado de interiores y exteriores</td>
-                        <td className="border px-4 py-2">200000</td>
-                    </tr>
-                    {/* Add more rows here */}
-                </tbody>
-            </table>
+  function handleServiceClick(service) {
+    setSelectedService(service);
+    setShowDetails(true);
+  }
+
+  function handleCloseDetails() {
+    setSelectedService(null);
+    setShowDetails(false);
+  }
+
+  return (
+    <div className="flex-1 flex flex-wrap items-center justify-center">
+      {services.map((service) => (
+        <div
+          key={service.id}
+          className="m-2 p-2 w-72 h-56 bg-white shadow-md rounded-lg flex flex-col items-center justify-center"
+        >
+          <h2 className="text-xl font-bold">{service.name}</h2>
+          <button
+            className="mt-4 mb-2 px-4 py-2 rounded-md text-white bg-green-500 hover:bg-green-600 focus:outline-none"
+            onClick={() => handleServiceClick(service)}
+          >
+            Ver detalles
+          </button>
+          <button
+  className="mt-2 px-4 py-2 rounded-md text-white bg-blue-500 hover:bg-green-600 focus:outline-none"
+  onClick={() => alert("Servicio contratado")}
+>
+  Contratar servicio
+</button>
+
         </div>
+      ))}
 
-
-
-    )
+      {showDetails && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-gray-800 opacity-50"></div>
+          <div className="bg-white p-4 shadow-md rounded-lg">
+            <button
+              className="absolute top-2 right-2 px-2 py-1 rounded-md text-white bg-red-500 hover:bg-red-600 focus:outline-none"
+              onClick={handleCloseDetails}
+            >
+              X
+            </button>
+            <h2 className="text-xl font-bold mb-2">{selectedService.name}</h2>
+            <p className="mb-2">
+              <strong>Prestador:</strong> {selectedService.provider}
+            </p>
+            <p className="mb-2">
+              <strong>Descripción:</strong> {selectedService.description}
+            </p>
+            <p className="mb-2">
+              <strong>Costo:</strong> ${selectedService.price.toLocaleString()}
+            </p>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
